@@ -10,13 +10,13 @@ export default class Machine {
         private readonly sendMessage: (client: Client, message: Message) => Promise<void>
     ) { }
 
-    async handleMessage(phone: string, message: Message, stateId?: string): Promise<void> {
+    async handleMessage(id: string, message: Message, stateId?: string): Promise<void> {
         let client: Client;
 
         try {
-            client = await this.clientRepository.getClient(phone);
+            client = await this.clientRepository.getClient(id);
         } catch (e) {
-            client = new Client(phone);
+            client = new Client(id);
             this.clientRepository.saveClient(client);
         }
 

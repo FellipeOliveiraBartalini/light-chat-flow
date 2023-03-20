@@ -9,20 +9,20 @@ export default class ClientMemoryRepository implements ClientRepository {
     }
 
     async saveClient(client: Client): Promise<Client> {
-        const newClients = this.clients.filter(c => c.phone !== client.phone);
+        const newClients = this.clients.filter(c => c.id !== client.id);
         newClients.push(client);
         this.clients = newClients;
         return client;
     }
 
-    async getClient(phone: string): Promise<Client> {
-        const clientsFiltred = this.clients.filter(c => c.phone === phone);
+    async getClient(id: string): Promise<Client> {
+        const clientsFiltred = this.clients.filter(c => c.id === id);
         if (clientsFiltred.length < 1) throw "Client not found!";
         return clientsFiltred[0];
     }
 
     async deleteClient(client: Client): Promise<Client> {
-        const newClients = this.clients.filter(c => c.phone !== client.phone);
+        const newClients = this.clients.filter(c => c.id !== client.id);
         this.clients = newClients;
         return client;
     }
