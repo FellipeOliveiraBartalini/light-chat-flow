@@ -7,4 +7,15 @@ export default class Client {
     ) {
         this.hashState = "";
     }
+
+    addStateIdToHash(stateId: string): string {
+        const stateIds = this.hashState
+            .split("|")
+            .filter(ids => ids);
+
+        stateIds.push(stateId);
+
+        this.hashState = stateIds.join("|");
+        return this.hashState;
+    }
 }
