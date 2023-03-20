@@ -7,7 +7,10 @@ export default class Branch {
         readonly label: string,
         readonly from: State,
         readonly to: State,
-        readonly matchFunction: (message: Message, branch: Branch) => boolean,
         readonly callback: (message: Message, client: Client) => Promise<void>
     ) { }
+
+    matchFunction(message: Message): boolean {
+        return message.text === this.label;
+    }
 }
