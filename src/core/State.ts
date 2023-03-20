@@ -1,5 +1,9 @@
-import Branch from "./Branch";
+import Branch, { BranchCallback } from "./Branch";
 import Message from "./Message";
+
+export interface MessagePayload {
+    text: string
+}
 
 export default class State {
 
@@ -7,14 +11,20 @@ export default class State {
 
     constructor(
         readonly id: string,
-        readonly message: Message,
-        readonly catchMessage: Message
+        readonly message: MessagePayload,
+        readonly catchMessage: MessagePayload
     ) {
         this.branchs = [];
     }
 
     link(branch: Branch): void {
         this.branchs.push(branch);
+    }
+
+    createBranch(label: string, to: State, callback?: BranchCallback): State {
+        const newBranch = new Branch(label, to, callback);
+        this.link(newBranch);
+        return this;
     }
 
     options(): string[] {
