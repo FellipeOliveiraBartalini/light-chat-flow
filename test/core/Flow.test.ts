@@ -1,6 +1,8 @@
 import Flow from "../../src/core/Flow"
 import State from "../../src/core/State";
 
+const ID = "a998097777";
+
 const start = new State("start", {
     text: "Olá meu povo!"
 }, {
@@ -13,13 +15,8 @@ const end = new State("end", {
     text: "Tu é muito chato, não te entendo!"
 });
 
-start.link({
-    from: start,
-    to: end,
-    callback: async (message, client) => {},
-    label: "Oi",
-    matchFunction: (message) => true
-})
+start
+    .createBranch("Oi", end);
 
 let flow: Flow;
 
