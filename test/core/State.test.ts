@@ -18,10 +18,10 @@ beforeEach(() => {
         text: "Faladireito"
     });
 
-    const branch = new Branch("Faaala", start, end, async () => {});
+    const branch = new Branch("Faaala", end);
     start.link(branch);
 
-    const branch2 = new Branch("Num briga cumigo", start, end, async () => {});
+    const branch2 = new Branch("Num briga cumigo", end);
     start.link(branch2);
 });
 
