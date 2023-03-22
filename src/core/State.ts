@@ -1,4 +1,3 @@
-import SendMessageGateway from "../gateways/SendMessage.gateway";
 import Branch, { BranchCallback } from "./Branch";
 import Message from "./Message";
 
@@ -16,8 +15,7 @@ export default class State {
         readonly id: string,
         readonly message: MessagePayload,
         readonly catchMessage: MessagePayload,
-        readonly matchFunction: MatchFunction,
-        readonly sendMessageGateway: SendMessageGateway
+        readonly matchFunction: MatchFunction
     ) {
         this.branchs = [];
     }
