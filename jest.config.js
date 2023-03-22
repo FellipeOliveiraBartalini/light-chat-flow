@@ -4,5 +4,6 @@ module.exports = {
     testEnvironment: 'node',
     testPathIgnorePatterns: [
         "dist"
-    ]
+    ],
+    collectCoverageFrom: ['src/**/*.{ts,tsx}']
 };
