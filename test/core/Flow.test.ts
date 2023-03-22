@@ -1,9 +1,6 @@
 import Flow from "../../src/core/Flow"
 import State from "../../src/core/State";
-import SendMessageFakeGateway from "../../src/gateways/SendMessageFake.gateway";
 import labelEqualsText from "../../src/utils/matchFunctions/labelEqualsText";
-
-const sendMessageGateway = new SendMessageFakeGateway();
 
 const ID = "a998097777";
 
@@ -11,13 +8,13 @@ const start = new State("start", {
     text: "Olá meu povo!"
 }, {
     text: "Desculpe não entendi vc!"
-}, labelEqualsText, sendMessageGateway);
+}, labelEqualsText);
 
 const end = new State("end", {
     text: "Foi bom te ver"
 }, {
     text: "Tu é muito chato, não te entendo!"
-}, labelEqualsText, sendMessageGateway);
+}, labelEqualsText);
 
 start
     .createBranch("Oi", end);
