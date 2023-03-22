@@ -38,7 +38,7 @@ export default class State {
 
     nextState(message: Message): State {
         const branchsMatchs = this.branchs.filter(branch => this.matchFunction(message, branch));
-        if (branchsMatchs.length < 0) throw "Next state not found!";
+        if (branchsMatchs.length < 1) throw "Next state not found!";
         return branchsMatchs[0].to;
     }
 }
