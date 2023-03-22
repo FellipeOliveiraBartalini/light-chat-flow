@@ -38,3 +38,36 @@ test("Testando get state by client hash - inexistente", () => {
     const state = flow.getStateByHash("start-estranho");
     expect(state.id).toBe("start");
 });
+
+test("Testando create state sem match Fn", () => {
+    const catchFn = jest.fn();
+    try {
+        flow.options.defaultMatchFunction = undefined;
+        flow.createState("test", "Mensagem", "Defeito");
+    } catch(e) {
+        catchFn(e);
+    }
+    expect(catchFn).toBeCalled();
+});
+
+test("Default state - throw", () => {
+    const catchFn = jest.fn();
+    try {
+        flow.options.defaultState = undefined;
+        flow.options.defaultStateId = undefined;
+        flow.getDefaultState();
+    } catch(e) {
+        catchFn(e);
+    }
+    expect(catchFn).toBeCalled();
+});
+
+test("Get state by id - not found", () => {
+    const catchFn = jest.fn();
+    try {
+        flow.getStateById('a');
+    } catch(e) {
+        catchFn(e);
+    }
+    expect(catchFn).toBeCalled();
+});
