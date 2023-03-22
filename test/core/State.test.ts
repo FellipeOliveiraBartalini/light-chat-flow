@@ -2,25 +2,22 @@ import Message from "../../src/core/Message";
 import State from "../../src/core/State";
 import Branch from "../../src/core/Branch";
 import labelEqualsText from "../../src/utils/matchFunctions/labelEqualsText";
-import SendMessageFakeGateway from "../../src/gateways/SendMessageFake.gateway";
 
 let start: State;
 let end: State;
-
-const sendMessageGateway = new SendMessageFakeGateway();
 
 beforeEach(() => {
     start = new State("start", {
         text: "Oi maluco"
     }, {
         text: "Nun tindi"
-    }, labelEqualsText, sendMessageGateway);
+    }, labelEqualsText);
 
     end = new State("end", {
         text: "Vatimbora maluco"
     }, {
         text: "Faladireito"
-    }, labelEqualsText, sendMessageGateway);
+    }, labelEqualsText);
 
     const branch = new Branch("Faaala", end);
     start.link(branch);
