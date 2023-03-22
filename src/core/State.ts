@@ -30,13 +30,21 @@ export default class State {
         return this;
     }
 
+    branch(label: string): Branch {
+        const newBranch = new Branch(label);
+        this.link(newBranch);
+        return newBranch;
+    }
+
     options(): string[] {
         return this.branchs.map(branch => branch.label);
     }
 
     nextState(message: Message): State {
-        const branchsMatchs = this.branchs.filter(branch => this.matchFunction(message, branch));
-        if (branchsMatchs.length < 1) throw "Next state not found!";
+        const branchsMatchs = this.branchs
+            .filter(branch => branch.to)
+            .filter(branch => this.matchFunction(message, branch));
+        if (branchsMatchs.length < 1 || !branchsMatchs[0].to) throw "Next state not found!";
         return branchsMatchs[0].to;
     }
 }
