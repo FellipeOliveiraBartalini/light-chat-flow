@@ -13,7 +13,25 @@ export default class Machine {
     ) { }
 
     async startFlow(clientId: string, startState?: State): Promise<void> {
+        let client: Client;
 
+        try {
+            client = await this.clientRepository.getClient(clientId);
+        } catch (e) {
+            client = new Client(clientId);
+        }
+
+        client.hashState = "";
+        const startStateOrDefault = startState ?? this.flow.getDefaultState();
+        const startStateId = startStateOrDefault.id;
+        client.addStateIdToHash(startStateId);
+
+        this.clientRepository.saveClient(client);
+
+        await this.sendMessageGateway.send({
+            id: client.id,
+            ...startStateOrDefault.message
+        });
     }
 
     async handleMessage(message: Message): Promise<void> {
