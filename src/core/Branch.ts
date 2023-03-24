@@ -22,12 +22,13 @@ export default class Branch {
         this.to = to;
     }
 
-    state(id: string, message: string, catchMessage: string, matchFunction: MatchFunction): void {
+    state(id: string, message: string, catchMessage: string, matchFunction: MatchFunction): State {
         const newState = new State(id, {
             text: message
         }, {
             text: catchMessage
         }, matchFunction);
         this.addTo(newState);
+        return newState;
     }
 }
