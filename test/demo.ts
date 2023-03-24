@@ -19,6 +19,10 @@ flow
         newState
             .branch("Oi")
             .state("end", "Foi bom te ver", "Tu é muito chato, não te entendo!", labelEqualsText);
+
+        newState
+            .branch("Ola")
+            .state("endDois", "Você é um cara muito bacana, falou...", "Sai da minha frente", labelEqualsText);
         return;
     });
 
@@ -27,7 +31,7 @@ const machine = new Machine(flow, clientRepository, sendMessageGateway);
 (async () => {
     const username = question("Whats your name? ");
     const id = crypto.randomUUID().slice(0, 5);
-    
+
     while (true) {
         const messageFromUser = question(`${username}: `);
         await machine.handleMessage({
