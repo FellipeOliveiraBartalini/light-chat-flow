@@ -1,20 +1,27 @@
 {
     "name": "light-chat-flow",
-    "version": "1.0.1",
+    "version": "1.0.8",
     "description": "A light option to make chat's flows.",
-    "main": "lib/src/main.js",
-    "types": "lib/src/main.d.ts",
+    "main": "lib/main.js",
+    "types": "lib/main.d.ts",
+    "files": [
+        "lib/**/*"
+    ],
     "scripts": {
         "test": "jest",
         "build": "tsc",
         "coverage": "jest --coverage --verbose",
         "demo": "ts-node test/demo.ts"
     },
-    "keywords": ["chat", "flow", "conversation", "light"],
+    "keywords": [
+        "chat",
+        "flow",
+        "conversation",
+        "light"
+    ],
     "author": "manbomb",
     "license": "ISC",
-    "dependencies": {
-    },
+    "dependencies": {},
     "devDependencies": {
         "@types/readline-sync": "^1.4.4",
         "@types/jest": "^29.5.0",

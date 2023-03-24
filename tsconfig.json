@@ -1,12 +1,13 @@
 {
     "compilerOptions": {
         "incremental": false,
-        "target": "es2016",
+        "target": "ES5",
         "module": "commonjs",
         "outDir": "./lib",
         "strict": true,
         "esModuleInterop": true,
-        "declaration": true
+        "declaration": true,
+        "moduleResolution": "node"
     },
     "include": [
         "src"
