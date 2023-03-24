@@ -36,23 +36,20 @@ beforeEach(() => {
 });
 
 test("Receive message test - not found client", async () => {
-    const spy = jest.spyOn(sendMessageGateway, "send");
+    const spy = jest.spyOn(sendMessageGateway, "sendMessageByState");
     await machine.handleMessage({
         id: '123',
         text: 'Oi'
     });
 
-    expect(sendMessageGateway.send).toBeCalledWith({
-        id: '123',
-        text: defaultState.message.text
-    });
+    expect(sendMessageGateway.sendMessageByState).toBeCalled();
     expect(clientRepository.clients.length).toBe(1);
 
     spy.mockReset();
 });
 
 test("Receive message test - client that exists", async () => {
-    const spy = jest.spyOn(sendMessageGateway, "send");
+    const spy = jest.spyOn(sendMessageGateway, "sendCatchMessage");
 
     const client = new Client("123");
     client.addStateIdToHash("default");
@@ -63,17 +60,14 @@ test("Receive message test - client that exists", async () => {
         text: 'Oi'
     });
 
-    expect(sendMessageGateway.send).toBeCalledWith({
-        id: '123',
-        text: defaultState.catchMessage.text
-    });
+    expect(sendMessageGateway.sendCatchMessage).toBeCalled();
     expect(clientRepository.clients[0].hashState).toBe('default');
 
     spy.mockReset();
 });
 
 test("Receive message test - client that exists with empty state", async () => {
-    const spy = jest.spyOn(sendMessageGateway, "send");
+    const spy = jest.spyOn(sendMessageGateway, "sendCatchMessage");
 
     const client = new Client("123");
     client.addStateIdToHash("");
@@ -84,17 +78,14 @@ test("Receive message test - client that exists with empty state", async () => {
         text: 'Oi'
     });
 
-    expect(sendMessageGateway.send).toBeCalledWith({
-        id: '123',
-        text: defaultState.catchMessage.text
-    });
+    expect(sendMessageGateway.sendCatchMessage).toBeCalled();
     expect(clientRepository.clients[0].hashState).toBe('');
 
     spy.mockReset();
 });
 
 test("Receive message test - client that exists with valid message", async () => {
-    const spy = jest.spyOn(sendMessageGateway, "send");
+    const spy = jest.spyOn(sendMessageGateway, "sendMessageByState");
 
     const client = new Client("123");
     client.addStateIdToHash("default");
@@ -105,17 +96,15 @@ test("Receive message test - client that exists with valid message", async () =>
         text: 'Sim'
     });
 
-    expect(sendMessageGateway.send).toBeCalledWith({
-        id: '123',
-        text: secondState.message.text
-    });
+    expect(sendMessageGateway.sendMessageByState).toBeCalled();
     expect(clientRepository.clients[0].hashState).toBe('default|second');
 
     spy.mockReset();
 });
 
 test("Receive message test - send message after end of flow", async () => {
-    const spy = jest.spyOn(sendMessageGateway, "send");
+    const spy = jest.spyOn(sendMessageGateway, "sendMessageByState");
+    const spyCatch = jest.spyOn(sendMessageGateway, "sendCatchMessage");
 
     const client = new Client("123");
     client.addStateIdToHash("default");
@@ -127,7 +116,8 @@ test("Receive message test - send message after end of flow", async () => {
         text: 'Sim'
     });
 
-    expect(sendMessageGateway.send).not.toBeCalled();
+    expect(sendMessageGateway.sendMessageByState).not.toBeCalled();
+    expect(sendMessageGateway.sendCatchMessage).not.toBeCalled();
     expect(clientRepository.clients[0].hashState).toBe('default|second');
 
     spy.mockReset();
