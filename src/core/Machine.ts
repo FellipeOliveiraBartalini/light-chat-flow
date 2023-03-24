@@ -41,13 +41,16 @@ export default class Machine {
             client = await this.clientRepository.getClient(message.id);
         } catch (e) {
             client = new Client(message.id);
-            this.clientRepository.saveClient(client);
-
+            
             const actualState = this.flow.getStateByHash(client.hashState);
             await this.sendMessageGateway.send({
                 id: client.id,
                 ...actualState.message
             });
+
+            client.addStateIdToHash(actualState.id);
+            this.clientRepository.saveClient(client);
+            
             return;
         }
 
