@@ -28,10 +28,7 @@ export default class Machine {
 
         this.clientRepository.saveClient(client);
 
-        await this.sendMessageGateway.send({
-            id: client.id,
-            ...startStateOrDefault.message
-        });
+        await this.sendMessageGateway.sendMessageByState(client, startStateOrDefault);
     }
 
     async handleMessage(message: Message): Promise<void> {
@@ -43,10 +40,7 @@ export default class Machine {
             client = new Client(message.id);
             
             const actualState = this.flow.getStateByHash(client.hashState);
-            await this.sendMessageGateway.send({
-                id: client.id,
-                ...actualState.message
-            });
+            await this.sendMessageGateway.sendMessageByState(client, actualState);
 
             client.addStateIdToHash(actualState.id);
             this.clientRepository.saveClient(client);
@@ -66,17 +60,11 @@ export default class Machine {
         try {
             nextState = actualState.nextState(message);
         } catch(e) {
-            await this.sendMessageGateway.send({
-                ...actualState.catchMessage,
-                id: client.id
-            });
+            await this.sendMessageGateway.sendCatchMessage(client, actualState);
             return;
         }
 
-        await this.sendMessageGateway.send({
-            ...nextState.message,
-            id: client.id
-        });
+        await this.sendMessageGateway.sendMessageByState(client, nextState);
 
         client.addStateIdToHash(nextState.id);
 

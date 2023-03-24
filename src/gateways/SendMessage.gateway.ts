@@ -1,5 +1,7 @@
-import Message from "../core/Message";
+import Client from "../core/Client";
+import State from "../core/State";
 
 export default interface SendMessageGateway {
-    send(message: Message): Promise<void>
+    sendCatchMessage(client: Client, state: State): Promise<void>,
+    sendMessageByState(client: Client, state: State): Promise<void>
 }
