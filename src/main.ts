@@ -6,8 +6,11 @@ import Message from "./core/Message";
 import State, { MatchFunction, MessagePayload } from "./core/State";
 
 import SendMessageGateway from "./gateways/SendMessage.gateway";
+import SendMessageConsoleGateway from "./gateways/SendMessageConsole.gateway";
+import SendMessageFakeGateway from "./gateways/SendMessageFake.gateway";
 
 import ClientRepository from "./repositories/Client.repository";
+import ClientMemoryRepository from "./repositories/ClientMemory.repository";
 
 import * as MatchFunctions from "./utils/matchFunctions";
 
@@ -24,6 +27,9 @@ export {
     MatchFunction,
     MessagePayload,
     SendMessageGateway,
+    SendMessageConsoleGateway,
+    SendMessageFakeGateway,
     ClientRepository,
+    ClientMemoryRepository,
     MatchFunctions
 }
