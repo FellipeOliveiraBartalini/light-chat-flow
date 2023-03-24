@@ -2,3 +2,6 @@
 /coverage
 /src
 /test
+.editorconfig
+jest.config.js
+tsconfig.json

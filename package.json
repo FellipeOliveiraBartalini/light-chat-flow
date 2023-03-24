@@ -1,13 +1,12 @@
 {
     "name": "light-chat-flow",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A light option to make chat's flows.",
-    "main": "dist/src/main.js",
-    "types": "dist/src/main.d.ts",
+    "main": "lib/src/main.js",
+    "types": "lib/src/main.d.ts",
     "scripts": {
         "test": "jest",
         "build": "tsc",
-        "start": "node ./dist/src/main.js",
         "coverage": "jest --coverage --verbose",
         "demo": "ts-node test/demo.ts"
     },
