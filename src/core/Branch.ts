@@ -6,13 +6,16 @@ export type BranchCallback = (message: Message, client: Client) => Promise<void>
 
 export default class Branch {
     to?: State;
+    order?: number;
 
     constructor(
         readonly label: string,
         to?: State,
+        order?: number | null,
         readonly callback?: BranchCallback
     ) {
         if (to) this.to = to;
+        if (order) this.order = order;
     }
 
     addTo(to: State) {
