@@ -1,28 +1,32 @@
 import { question } from 'readline-sync';
 import crypto from 'crypto';
+
 import Flow from '../src/core/Flow';
-import labelEqualsText from '../src/utils/matchFunctions/labelEqualsText';
 import Machine from '../src/core/Machine';
+
 import ClientMemoryRepository from '../src/repositories/ClientMemory.repository';
-import SendMessageFakeGateway from '../src/gateways/SendMessageFake.gateway';
+
+import SendMessageConsoleGateway from '../src/gateways/SendMessageConsole.gateway';
+
+import labelEqualsTextOrNumber from '../src/utils/matchFunctions/labelEqualsTextOrNumber';
 
 const clientRepository = new ClientMemoryRepository();
-const sendMessageGateway = new SendMessageFakeGateway()
+const sendMessageGateway = new SendMessageConsoleGateway()
 
 const flow = new Flow({
     defaultStateId: "start",
-    defaultMatchFunction: labelEqualsText
+    defaultMatchFunction: labelEqualsTextOrNumber
 });
 
 flow
     .createState("start", "Olá meu povo!", "Desculpe, não entendi vc!", (newState) => {
         newState
             .branch("Oi")
-            .state("end", "Foi bom te ver", "Tu é muito chato, não te entendo!", labelEqualsText);
+            .state("end", "Foi bom te ver", "Tu é muito chato, não te entendo!", labelEqualsTextOrNumber);
 
         newState
             .branch("Ola")
-            .state("endDois", "Você é um cara muito bacana, falou...", "Sai da minha frente", labelEqualsText);
+            .state("endDois", "Você é um cara muito bacana, falou...", "Sai da minha frente", labelEqualsTextOrNumber);
         return;
     });
 
