@@ -25,13 +25,14 @@ export default class State {
     }
 
     createBranch(label: string, to: State, callback?: BranchCallback): State {
-        const newBranch = new Branch(label, to, callback);
+        const newBranch = new Branch(label, to, this.branchs.length, callback);
         this.link(newBranch);
         return this;
     }
 
     branch(label: string): Branch {
         const newBranch = new Branch(label);
+        newBranch.order = this.branchs.length;
         this.link(newBranch);
         return newBranch;
     }
