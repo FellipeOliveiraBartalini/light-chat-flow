@@ -11,11 +11,21 @@ beforeEach(() => {
     });
 
     flow
-        .createState("start", "Olá meu povo!", "Desculpe, não entendi vc!", (newState) => {
-            newState
-                .branch("Oi")
-                .state("end", "Foi bom te ver", "Tu é muito chato, não te entendo!", labelEqualsText);
-            return;
+        .createState({
+            id: "start",
+            message: "Olá meu povo!",
+            catchMessage: "Desculpe, não entendi vc!",
+            createStateCallback: (newState) => {
+                newState
+                    .branch("Oi")
+                        .state({
+                            id: "end",
+                            message: "Foi bom te ver",
+                            catchMessage: "Tu é muito chato, não te entendo!",
+                            matchFunction: labelEqualsText
+                        });
+                return;
+            }
         });
 });
 
@@ -43,8 +53,12 @@ test("Testando create state sem match Fn", () => {
     const catchFn = jest.fn();
     try {
         flow.options.defaultMatchFunction = undefined;
-        flow.createState("test", "Mensagem", "Defeito");
-    } catch(e) {
+        flow.createState({
+            id: "test",
+            message: "Mensagem",
+            catchMessage: "Defeito"
+        });
+    } catch (e) {
         catchFn(e);
     }
     expect(catchFn).toBeCalled();
@@ -56,7 +70,7 @@ test("Default state - throw", () => {
         flow.options.defaultState = undefined;
         flow.options.defaultStateId = undefined;
         flow.getDefaultState();
-    } catch(e) {
+    } catch (e) {
         catchFn(e);
     }
     expect(catchFn).toBeCalled();
@@ -66,7 +80,7 @@ test("Get state by id - not found", () => {
     const catchFn = jest.fn();
     try {
         flow.getStateById('a');
-    } catch(e) {
+    } catch (e) {
         catchFn(e);
     }
     expect(catchFn).toBeCalled();
