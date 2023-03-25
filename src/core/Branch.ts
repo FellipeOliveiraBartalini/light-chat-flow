@@ -22,13 +22,20 @@ export default class Branch {
         this.to = to;
     }
 
-    state(id: string, message: string, catchMessage: string, matchFunction: MatchFunction): State {
-        const newState = new State(id, {
-            text: message
+    state(newBranchStateParams: NewBranchStateParams): State {
+        const newState = new State(newBranchStateParams.id, {
+            text: newBranchStateParams.message
         }, {
-            text: catchMessage
-        }, matchFunction);
+            text: newBranchStateParams.catchMessage
+        }, newBranchStateParams.matchFunction);
         this.addTo(newState);
         return newState;
     }
 }
+
+export interface NewBranchStateParams {
+    id: string,
+    message: string,
+    catchMessage: string,
+    matchFunction: MatchFunction
+};

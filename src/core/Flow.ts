@@ -43,19 +43,17 @@ export default class Flow {
         }
     }
 
-    createState(id: string, message: string, catchMessage: string, createStateCallback?: CreateStateCallback, matchFunction?: MatchFunction): Flow {
-        const matchFunctionDefined = matchFunction ? matchFunction : this.options.defaultMatchFunction;
+    createState(newStateParams: NewFlowStateParams): Flow {
+        const matchFunctionDefined = newStateParams.matchFunction ?? this.options.defaultMatchFunction;
         if (!matchFunctionDefined) throw "Missing matchFn";
 
-        const newState = new State(id, {
-            text: message
+        const newState = new State(newStateParams.id, {
+            text: newStateParams.message
         }, {
-            text: catchMessage
+            text: newStateParams.catchMessage
         }, matchFunctionDefined);
 
-        if (createStateCallback) {
-            createStateCallback(newState, this);
-        }
+        if (newStateParams.createStateCallback) newStateParams.createStateCallback(newState, this); 
 
         this.addStates(newState);
         return this;
@@ -79,3 +77,11 @@ export interface FlowOptions {
     defaultStateId?: string,
     defaultMatchFunction?: MatchFunction
 }
+
+export interface NewFlowStateParams {
+    id: string,
+    message: string,
+    catchMessage: string,
+    createStateCallback?: CreateStateCallback,
+    matchFunction?: MatchFunction
+};
