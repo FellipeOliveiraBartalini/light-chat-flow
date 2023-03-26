@@ -1,7 +1,7 @@
 import { question } from 'readline-sync';
 import crypto from 'crypto';
 
-import Flow from '../src/core/Flow';
+import Flow, { NewFlowStateParams } from '../src/core/Flow';
 import Machine from '../src/core/Machine';
 
 import ClientMemoryRepository from '../src/repositories/ClientMemory.repository';
@@ -18,17 +18,62 @@ const flow = new Flow({
     defaultMatchFunction: labelEqualsTextOrNumber
 });
 
-flow.createState("start", "Olá, aqui é o plínio.", "Desculpa, não te entendi", (newState) => {
-    const educado = newState.branch("Olá").state("educado", "Que bom saber que você é um cliente educado", "Eu não te entendi meu bom amigo", labelEqualsTextOrNumber)
+const newFlowStateParams: NewFlowStateParams = {
+    id: "start",
+    message: "Olá, aqui é o plínio.",
+    catchMessage: "Desculpa, não te entendi",
+    createStateCallback: (newState) => {
+        const educado = newState.branch("Olá")
+            .state({
+                id: "educado",
+                message: "Que bom saber que você é um cliente educado",
+                catchMessage: "Eu não te entendi meu bom amigo",
+                matchFunction: labelEqualsTextOrNumber
+            });
 
-    educado.branch("Sou mesmo!").state("soumemo", "Ish, que arrogância", "Eu não te entendi arrogante.", labelEqualsTextOrNumber)
-    educado.branch("Será!?").state("sera", "Aí vc me complica compadre", "Não te entendi compadre", labelEqualsTextOrNumber);
+                educado.branch("Sou mesmo!")
+                    .state({
+                        id: "soumemo",
+                        message: "Ish, que arrogância",
+                        catchMessage: "Eu não te entendi arrogante.",
+                        matchFunction: labelEqualsTextOrNumber
+                    });
 
-    const chato = newState.branch("Hum").state("chato", "Que difícil hein, vc é um cara chato, que pena", "Fala de novo", labelEqualsTextOrNumber);
+                educado.branch("Será!?")
+                    .state({
+                        id: "sera",
+                        message: "Aí vc me complica compadre",
+                        catchMessage: "Não te entendi compadre",
+                        matchFunction: labelEqualsTextOrNumber
+                    });
 
-    chato.branch("Sou mesmo!").state("souchatomemo", "Ish, que arrogância", "Eu não te entendi arrogante.", labelEqualsTextOrNumber)
-    chato.branch("Não sou não!").state("naosouchato", "Vamos descobrir", "Eu não te entendi inoscente.", labelEqualsTextOrNumber);
-});
+        const chato = newState.branch("Hum")
+            .state({
+                id: "chato",
+                message: "Que difícil hein, vc é um cara chato, que pena",
+                catchMessage: "Fala de novo",
+                matchFunction: labelEqualsTextOrNumber
+            });
+
+                chato.branch("Sou mesmo!")
+                    .state({
+                        id: "souchatomemo",
+                        message: "Ish, que arrogância",
+                        catchMessage: "Eu não te entendi arrogante.",
+                        matchFunction: labelEqualsTextOrNumber
+                    });
+
+                chato.branch("Não sou não!")
+                    .state({
+                        id: "naosouchato",
+                        message: "Vamos descobrir",
+                        catchMessage: "Eu não te entendi inoscente.",
+                        matchFunction: labelEqualsTextOrNumber
+                    });
+    }
+}
+
+flow.createState(newFlowStateParams);
 
 const machine = new Machine(flow, clientRepository, sendMessageGateway);
 
